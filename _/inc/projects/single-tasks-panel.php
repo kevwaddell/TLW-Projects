@@ -23,13 +23,6 @@
 			</div>
 			<div class="col-xs-6 text-right">
 				<a href="?request=add-task&pid=<?php echo $post->ID; ?>" class="btn btn-primary request-btn" role="button"><i class="fa fa-plus"></i> <span class="txt">Add Task</span></a>
-				<button id="view-video" type="button" class="btn btn-info open-sidebar">
-					<i class="fa fa-video-camera"></i>
-				</button>
-				
-				<button id="view-help" type="button" class="btn btn-info open-sidebar">
-					<i class="fa fa fa-life-ring"></i>
-				</button>
 			</div>
 		</div>
 	</div>
