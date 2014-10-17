@@ -169,7 +169,7 @@ $max_num_pages = $wp_query->max_num_pages;
 
 		<?php else: ?>
 		<div class="panel-body text-center">
-		<span class="fa fa-cogs fa-4x block icon"></span>
+		<span class="fa fa-archive fa-4x block icon"></span>
 		<?php 
 		if ( $_GET['projects-filter'] == 'complete' ) {
 		$message = 	"There are no completed projects at the moment.";

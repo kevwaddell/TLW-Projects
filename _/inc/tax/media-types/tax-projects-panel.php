@@ -180,7 +180,7 @@ $icon = get_field('mt_icon', $media_type_data->taxonomy.'_'.$media_type_data->te
 
 		<?php else: ?>
 		<div class="panel-body text-center">
-		<span class="fa <?php echo ($icon) ? $icon:'fa-cogs' ; ?> fa-4x block icon"></span>
+		<span class="fa <?php echo ($icon) ? $icon:'fa-archive' ; ?> fa-4x block icon"></span>
 		<?php 
 		if ( $_GET['projects-filter'] == 'complete' ) {
 		$message = 	"There are no completed <strong>".single_cat_title('',false)."</strong> projects at the moment.";
