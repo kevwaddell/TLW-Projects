@@ -1,0 +1,50 @@
+.navbar {
+.no-rounded;
+.mag-bot(0);
+.no-border;
+
+	.navbar-header {
+		@media (min-width: @screen-sm) {
+		.w(28);
+		}
+		a.navbar-brand {
+		.block;
+		.w(20);
+		.pad-all(0);
+		.bg-img("logo.png");
+		.bg-repeat(no-repeat);
+		background-position: left center;
+		.mag-left(1.5);
+			@media (min-width: @screen-sm) {
+			.mag-left(0);
+			}
+			
+			&:hover, &:active, &:focus {
+			.opacity(0.5);	
+			}
+		}
+	}
+}
+
+.breadcrumbs-outer {
+.fixed;
+z-index: 1000;
+.bg-col(@gray);
+.top(5);
+.left(0);
+width: 100%;
+.h(3);
+.line-h(3);
+.col(@grayDk);
+white-space: nowrap;
+overflow-x: auto;
+	i {
+	.mag(0;1;0;1);
+	}
+	a {
+	.col(white);
+		&:hover, &:active, &:focus {
+		.col(@grayDk);	
+		}	
+	}
+}

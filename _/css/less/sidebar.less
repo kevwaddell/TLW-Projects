@@ -1,0 +1,40 @@
+aside.help-sidebar {
+	.fixed;
+	.top(8);
+	.bottom(5);
+	width: 90%;
+	.bg-col(@grayDk);
+	.inner-shadow(0, 0, 10px, 0.5);
+	.transition(0.5s, ease-in-out);
+	.pad-all(2);
+	
+	@media (min-width: @screen-sm) { 
+	width: 50%;
+	}
+	
+	@media (min-width: @screen-md) { 
+	.w(30);
+	}
+	
+	&.sidebar-open {
+	.right(0);	
+	}
+	
+	
+	&.sidebar-closed {
+	right: -90%;
+		@media (min-width: @screen-sm) { 
+		right: -50%;
+		}
+		
+		@media (min-width: @screen-md) { 
+		.right(-30);
+		}
+	}
+}
+
+body#dashboard {
+	aside.help-sidebar {
+	.top(5);
+	}
+}

@@ -1,0 +1,182 @@
+body#user-page {
+.bg-col(@grayDk);
+.bg-img('stripes.png');
+}
+
+.user-header {
+.fixed;
+.top(0);
+.left(0);
+width: 100%;
+.col(white);
+.pad-top(2);
+.pad-left(2);	
+.font-size(2);
+z-index: 10;
+	span {
+	.bg-col(@grayDk);
+	.pad(0.5;1;0.5;1);	
+	}
+}
+
+.user-footer {
+.fixed;
+.bottom(0);
+.left(0);
+width: 100%;	
+	ul.tml-action-links {
+	list-style: none;
+	.bg-col(@grayDk);
+	.pad(0.5;1;0.5;1);
+	.fright;
+	.mag-right(2);	
+	.mag-bot(2);
+	}
+	
+	a {
+	.col(white);
+		&:hover, &:active, &:focus {
+		.col(@grayLt);	
+		}	
+	}
+}
+
+.user-wrapper {
+.rel;
+height: 100%;	
+.bg-img('user-bg.png');
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.wrapper-inner {
+	text-align: center;	
+	.pad(2);
+	height: 100%;
+	
+	&:before {
+		content: "";
+		.in-block;
+		height: 100%;
+		vertical-align: middle;
+		margin-right: -0.25em;
+	}
+	
+	.login {
+	.bg-col(white);
+	.bg-img('login-logo.png');
+	background-position: center top;
+	background-repeat: no-repeat;
+	.rounded(50px);	
+	.pad(12;4;2;4);
+	.drop-shadow(0, 0, 20px, 0.7);
+	.in-block;
+	vertical-align: middle;
+	width: 90%;
+	height: 50%;
+	.min-h(40);
+	text-align: left;
+
+		@media (min-width: @screen-sm) {
+		.max-w(50);
+		.min-h(20);
+		height: auto;
+		}
+		
+		p.error {
+		.bg-col(@danger);
+		.col(white);
+		text-align: center;
+		.no-border;	
+			a {
+			.col(white);	
+			}
+		}
+		
+		p.message {
+		.bg-col(@warning);
+		.col(white);
+		text-align: center;
+		.no-border;	
+			a {
+			.col(white);	
+			}
+		}
+		
+		h1 {
+		.font-lite;
+		.mag-top(0);
+		text-align: center;
+		.col(@gray);
+		.font-size(3);
+		}
+		
+		.form-group {
+		.border-bot(@gray; 0.1);	
+		}
+		
+		.input {
+		.pad-left(0);
+		.no-border;
+		.no-rounded;	
+		.col(@gray);
+		.font-size(2);
+		.font-lite;
+		.inner-shadow(0, 0, 0, 0);
+			&:focus {
+			outline: none;
+			box-shadow: none;
+			}
+		}
+		span.input-group-btn {
+		.pad-left(0.3);
+			button.btn {
+			.w(3);
+			.h(3);
+			.pad-all(0);
+			.rounded(30px);
+			.border(@gray; 0.1);
+			.col(@gray);
+				&:active, &:focus {
+				outline: none;	
+				}
+			}
+			i {
+			.block;
+			.w(3);
+			.h(3);
+			.line-h(2.8);
+			.font-size(2);	
+			}
+		}
+		
+		#pass-strength-result {
+		width: 100%;
+		.pad-all(0);
+		.h(5);
+		.line-h(5);	
+		.mag-bot(1);
+		}
+		
+		p.indicator-hint {
+		.font-size(1.4);
+		.col(@gray);	
+		}
+		
+		::-webkit-input-placeholder {
+		   color: @gray;
+		}
+		
+		:-moz-placeholder { /* Firefox 18- */
+		   color: @gray;  
+		}
+		
+		::-moz-placeholder {  /* Firefox 19+ */
+		  	color: @gray; 
+		}
+		
+		:-ms-input-placeholder {  
+		   color: @gray; 
+		}
+	}
+}
