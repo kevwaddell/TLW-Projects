@@ -34,6 +34,12 @@
 		
 		<?php foreach ($tasks as $t) { 
 		$title = $t->post_title;
+		$priority_level = get_field('priority_level', $t->ID);
+		if (empty($priority_level)) {
+			$priority_level = "4";
+			update_post_meta($t->ID, 'priority_level', $priority_level);	
+			$priority_level = get_field('priority_level', $t->ID);
+		}
 		$content = apply_filters('the_content', $t->post_content );
 		$owner = get_userdata($t->post_author);	
 		$status = get_field('task_status', $t->ID);
@@ -53,6 +59,22 @@
 				<div class="col-xs-10 col-md-11">
 					<span class="label label-default task-label date"><i class="fa fa-calendar"></i> <?php echo date('D jS M, Y', strtotime($task_date)); ?></span> 
 					<span class="label label-default task-label name"><i class="fa fa-user"></i> <?php echo $owner->data->display_name; ?></span> 
+					<?php if ($status == 'pending' && $priority_level) { 
+							switch($priority_level) {
+							case "1": $priority_level_txt = "Urgent"; $priority_level_class = "danger";
+							break;
+							case "2": $priority_level_txt = "High"; $priority_level_class = "warning";
+							break;
+							case "3": $priority_level_txt = "Medium"; $priority_level_class = "primary";
+							break;
+							default: $priority_level_txt = "Low"; $priority_level_class = "info";	
+							}
+						?>
+						
+						<span class="label label-<?php echo $priority_level_class; ?> task-label name"> <i class="fa fa-sort"></i> <?php echo $priority_level_txt; ?></span>
+						
+						<?php } ?>
+
 					<h4 class="list-group-item-heading"><?php echo $title; ?></h4>
 					<div class="list-group-item-text"><?php echo $content; ?></div>
 				</div>

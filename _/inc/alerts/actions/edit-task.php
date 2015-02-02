@@ -6,6 +6,10 @@ $tid = $_POST['tid'];
 $pid = $_POST['pid'];
 global $current_user;
 $users = get_users('exclude='.$current_user->ID);
+$priority_level = $_POST['priority_level'];
+if ($priority_level == '0') {
+$priority_level = '4';
+}
 $task_title = trim($_POST['task_title']);
 $task_date = trim($_POST['task_date']);
 $task_date_convert = date('Ymd', strtotime($task_date));
@@ -20,6 +24,7 @@ $project_completed_date = get_field('project_completed_date',$pid);
 $task_title_orig = get_field('task_title', $task->ID);
 $task_date_orig = get_field('task_date', $task->ID);
 $gdrive_link_orig = get_field('gdrive_link', $task->ID);
+$priority_level_orig = get_field('priority_level', $task->ID);
 $task_content_orig = $task->post_content;
 $task_status_orig = get_field('task_status', $task->ID);
 
@@ -40,6 +45,10 @@ $task_date_convert = $task_date_orig;
 }
 
 if ($task_content !== $task_content_orig) {
+$changes = true;	
+}
+
+if ($priority_level !== $priority_level_orig) {
 $changes = true;	
 }
 
@@ -75,6 +84,7 @@ if ($changes) {
 	update_post_meta($tid, 'task_date', $task_date_convert); 
 	update_post_meta($tid, 'task_status', $task_status); 	
 	update_post_meta($tid, 'gdrive_link', $gdrive_link); 
+	update_post_meta($tid, 'priority_level', $priority_level); 
 }
  ?>
 

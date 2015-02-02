@@ -1,6 +1,6 @@
 <?php 
-$weeks_before = date('Ymd', strtotime('today - 2 weeks'));
-$weeks_after = date('Ymd', strtotime('today + 2 weeks'));
+$weeks_before = date('Ymd', strtotime('today - 4 weeks'));
+$weeks_after = date('Ymd', strtotime('today + 4 weeks'));
 $projects_pg = get_page_by_title("Projects");
 if ( get_query_var('paged') ) {
 

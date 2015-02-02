@@ -38,7 +38,6 @@ $projects_pg = get_page_by_title('Projects');
 $curURL = get_permalink($projects_pg->ID);
 }
 
-
 //echo '<pre>';print_r($edit_task);echo '</pre>';
  ?>
 <div class="alert alert-info">
@@ -82,6 +81,17 @@ $curURL = get_permalink($projects_pg->ID);
 				<option value="<?php echo $usr->ID; ?>"<?php echo ($usr->ID == $current_user->ID) ? ' selected':''; ?>><?php echo $usr->data->display_name; ?></option>
 				<?php } ?>
 			
+			</select>
+		</div>
+		
+		<div class="form-group required">
+			<label for="priority_level"><i class="fa fa-asterisk"></i> Priority Level</label>
+			<select name="priority_level" id="priority_level" class="form-control">
+				<option value="0">Select choose priority level</option>
+				<option value="1">Urgent</option>
+				<option value="2">High</option>
+				<option value="3">Medium</option>
+				<option value="4">Low</option>
 			</select>
 		</div>
 		

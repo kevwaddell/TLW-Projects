@@ -13,23 +13,20 @@ $from_email = $from->data->user_email;
 
 //echo '<pre>';print_r($from);echo '</pre>';
 
-$subject = "$from_name has completed a TLW Project";
-$message = "<h3><font style=\"color: red;\">$from_name</font> has completed a TLW Project.</h3>";
-$message .= "<br>";
-$message .= "<table width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"10\"><tbody><thead>";
-$message .= "<tr><th colspan=\"2\" bgcolor=\"#989898\">PROJECT DETAILS</th></tr></thead>";
-$message .= "<tbody><tr><td bgcolor=\"#C0C0C0\" width=\"20%\">Project:</td><td bgcolor=\"#D8D8D8\">".  $project->post_title ."</td></tr>";
-$message .= "<tr><td bgcolor=\"#C0C0C0\">Description:</td><td bgcolor=\"#D8D8D8\">". $project->post_content ."</td></tr>";
-if ($link) { 
-$message .= "<tr><td bgcolor=\"#C0C0C0\">Attachment:</td><td bgcolor=\"#D8D8D8\"><a href=\"".  $link ."\" title=\"Attachment link\">Attachment link >></a></td></tr>";
-}
-$message .= "<tr><td bgcolor=\"#C0C0C0\" valign=\"top\">Project created on:</td><td bgcolor=\"#D8D8D8\">".  date('D jS F Y', $project_created) . "</td></tr></tbody>";
-$message .= "<tfoot><tr><td bgcolor=\"#C0C0C0\">Completed on:</td><td bgcolor=\"#D8D8D8\">". date('D jS F Y', $now) ." at ". date('H:i', $now)  . "</td></tr>";
-$message .= "<tr><td bgcolor=\"#C0C0C0\">Project created by:</td><td bgcolor=\"#D8D8D8\">". $project_created_by->data->display_name . "</td></tr></tfoot>";
-$message .= "</table><br><br>";
-$message .= "Please use the link below to view project details.<br><br>";
-$message .= "<a href=\"".get_permalink($project->ID)."\" title=\"View project details\">View project details >></a><br><br>";
-$headers = "From: $from_name <$from_email>";
+$subject = $from_name .' has completed a TLW Project';
+$message = '<h3><font style="color: red;">'. $from_name .'</font> has completed a TLW Project.</h3>';
+$message .= '<br>';
+$message .= '<table width="100%" border="0" cellspacing="2" cellpadding="10"><tbody><thead>';
+$message .= '<tr><th colspan="2" bgcolor="#989898">PROJECT DETAILS</th></tr></thead>';
+$message .= '<tbody><tr><td bgcolor="#C0C0C0" width="20%">Project:</td><td bgcolor="#D8D8D8">'.  $project->post_title .'</td></tr>';
+$message .= '<tr><td bgcolor="#C0C0C0">Description:</td><td bgcolor="#D8D8D8">'. $project->post_content .'</td></tr>';
+$message .= '<tr><td bgcolor="#C0C0C0" valign="top">Project created on:</td><td bgcolor="#D8D8D8">'.  date('D jS F Y', $project_created) . '</td></tr></tbody>';
+$message .= '<tfoot><tr><td bgcolor="#C0C0C0">Completed on:</td><td bgcolor="#D8D8D8">'. date('D jS F Y', $now) .' at '. date('H:i', $now)  . '</td></tr>';
+$message .= '<tr><td bgcolor="#C0C0C0">Project created by:</td><td bgcolor="#D8D8D8">'. $project_created_by->data->display_name . '</td></tr></tfoot>';
+$message .= '</table><br><br>';
+$message .= 'Please use the link below to view project details.<br><br>';
+$message .= '<a href="'.get_permalink($project->ID).'" title="View project details">View project details >></a><br><br>';
+$headers = 'From:'. $from_name .'<'. $from_email .'>';
 
 
 function wps_set_content_type(){

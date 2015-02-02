@@ -60,13 +60,8 @@ if (empty($project_errors)) {
 	wp_set_post_terms( $pid, array($company_tax), 'tlw_company_tax' );
 	wp_set_post_terms( $pid, $media_type, 'tlw_media_types' );
 	
-	add_post_meta($pid, '_project_title', 'field_541ad2e0fc4ea');
 	add_post_meta($pid, 'project_title', $project_title);
-	
-	add_post_meta($pid, '_project_start_date', 'field_541ad320fc4eb');
 	add_post_meta($pid, 'project_start_date', $project_date_convert);
-	
-	add_post_meta($pid, '_project_completed_date', 'field_541bf40fadcba');
 	add_post_meta($pid, 'project_completed_date', '');
 }
 
@@ -102,7 +97,7 @@ $curURL = get_permalink($projects_pg->ID);
 
 	<p class="text-center"><strong>Notify team members.</strong></p>
 	
-	<form action="<?php the_permalink(); ?>" method="post" class="alert-form" id="notify_team_form">
+	<form action="<?php echo $curURL(); ?>" method="post" class="alert-form" id="notify_team_form">
 	
 	<input type="hidden" value="<?php echo $current_user->ID; ?>" name="uid">
 	<input type="hidden" value="<?php echo $pid; ?>" name="pid">
@@ -124,7 +119,7 @@ $curURL = get_permalink($projects_pg->ID);
 			<input type="submit" name="notify-team" value="Notify" class="btn btn-success btn-block">
 			</div>
 			<div class="col-xs-6">
-			<a href="<?php the_permalink(); ?>" class="btn btn-default btn-block" title="Continue">Continue <i class="fa fa-angle-right"></i> </a>
+			<a href="<?php echo $curURL(); ?>" class="btn btn-default btn-block" title="Continue">Continue <i class="fa fa-angle-right"></i> </a>
 			</div>
 		</div>
 	</div>

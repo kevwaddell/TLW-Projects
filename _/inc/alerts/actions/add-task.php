@@ -1,11 +1,12 @@
 <?php if ( isset($_POST['add_task']) ) { ?>
 
 <?php 
-//echo '<pre>';print_r($_POST);echo '</pre>';
+//echo '<pre>';print_r($projects);echo '</pre>';
 global $current_user;	
 $uid = $_POST['uid'];
 $pid = $_POST['pid'];
-$users = get_users('exclude='.$current_user->ID);
+$priority_level = $_POST['priority_level'];
+$users = get_users();
 $project = get_post($pid);
 $task_title = trim($_POST['task_title']);
 $task_date = trim($_POST['task_date']);
@@ -29,6 +30,10 @@ if ($task_date == "") {
 $task_errors[] = "Please choose a task date.";	
 }
 
+if ($priority_level == 0) {
+$task_errors[] = "Please choose a priority level.";	
+}
+
 if ($pid == 0) {
 $task_errors[] = "Please choose a project.";	
 } else {	
@@ -40,6 +45,27 @@ $project_completed_date = get_field('project_completed_date',$pid);
 
 if ($current_user->ID != $project->post_author || $current_user->ID != $uid) {
 $notify = true;	
+}
+
+$curURL = get_permalink();
+
+if (is_front_page()) {
+$curURL = get_option('home');
+}
+
+if (is_tax('tlw_media_types')) {
+$media_type = get_query_var("media-type");
+$curURL = get_term_link($media_type, 'tlw_media_types');
+}
+
+if (is_tax('tlw_company_tax')) {
+$company = get_query_var("company");
+$curURL = get_term_link($company, 'tlw_company_tax');
+}
+
+if (is_post_type_archive('tlw_project')) {
+$projects_pg = get_page_by_title('Projects');
+$curURL = get_permalink($projects_pg->ID);
 }
 
 if (empty($task_errors)) {
@@ -64,15 +90,11 @@ if (empty($task_errors)) {
 	update_post_meta($pid, 'project_completed_date', "", $project_completed_date); 	
 	}
 	
-	add_post_meta($tid, '_task_title', 'field_541adcec36c33');
+	add_post_meta($tid, 'priority_level', $priority_level);
 	add_post_meta($tid, 'task_title', $task_title);
-	add_post_meta($tid, '_task_date', 'field_541ae8d468207');
 	add_post_meta($tid, 'task_date', $task_date_convert);
-	add_post_meta($tid, '_project', 'field_5419a8f1e8ffd');
 	add_post_meta($tid, 'project', $pid);
-	add_post_meta($tid, '_task_status', 'field_541adb92fe19c');
 	add_post_meta($tid, 'task_status', $task_status);	
-	add_post_meta($tid, '_gdrive_link', 'field_541adb3e5e183');
 	add_post_meta($tid, 'gdrive_link', $gdrive_link);
 }
  ?>
@@ -87,7 +109,7 @@ if (empty($task_errors)) {
 
 	<p class="text-center"><strong>Notify team members.</strong></p>
 	
-	<form action="<?php the_permalink(); ?>" method="post" class="alert-form" id="notify_team_form">
+	<form action="<?php echo $curURL; ?>" method="post" class="alert-form" id="notify_team_form">
 	
 	<input type="hidden" value="<?php echo $current_user->ID; ?>" name="uid">
 	<input type="hidden" value="<?php echo $tid; ?>" name="tid">
@@ -110,7 +132,7 @@ if (empty($task_errors)) {
 			<input type="submit" name="notify-team" value="Notify" class="btn btn-success btn-block">
 			</div>
 			<div class="col-xs-6">
-			<a href="<?php the_permalink(); ?>" class="btn btn-default btn-block" title="Continue">Continue <i class="fa fa-angle-right"></i> </a>
+			<a href="<?php echo $curURL; ?>" class="btn btn-default btn-block" title="Continue">Continue <i class="fa fa-angle-right"></i> </a>
 			</div>
 		</div>
 	</div>
@@ -128,7 +150,7 @@ if (empty($task_errors)) {
 	<p class="text-center bold">Your task has been added.</p><br>
 
 	<div class="action-btns">
-		<a href="<?php the_permalink(); ?>" class="btn btn-success btn-block" title="Continue">Continue <i class="fa fa-angle-right"></i></a>
+		<a href="<?php echo $curURL; ?>" class="btn btn-success btn-block" title="Continue">Continue <i class="fa fa-angle-right"></i></a>
 	</div>
 
 </div>
@@ -143,7 +165,7 @@ if (empty($task_errors)) {
 	
 	<div class="alert-content">
 	
-	<form action="<?php the_permalink(); ?>" method="post" class="alert-form" id="add_task_form">
+	<form action="<?php echo $curURL; ?>" method="post" class="alert-form" id="add_task_form">
 		
 		<br>
 		<div class="well">
@@ -162,19 +184,27 @@ if (empty($task_errors)) {
 	
 		<div class="form-group required">
 			<label for="task_title"><i class="fa fa-asterisk"></i> Task title:</label>
-			<input type="text" id="task_title" name="task_title" class="form-control" value="">
+			<input type="text" id="task_title" name="task_title" class="form-control" value="<?php echo (isset($_POST['task_title'])) ? stripslashes($task_title) :''; ?>">
 		</div>
 		
 		<?php if (isset($_GET['pid'])) { ?>
 		<input type="hidden" value="<?php echo $pid; ?>" name="pid">
-		<?php } else { ?>
+		<?php } else { 
+		$p_args = array(
+		'post_type'	=> 'tlw_project',
+		'posts_per_page' => -1,
+		'orderby'	=>	'title'
+		);
+	
+		$projects = get_posts($p_args);		
+		?>
 		
 		<div class="form-group required">
 			<label for="pid"><i class="fa fa-asterisk"></i> Project:</label>
 			<select name="pid" id="pid" class="form-control">
 				<option value="0">Select a project</option>
 				<?php foreach ($projects as $p) { ?>
-				<option value="<?php echo $p->ID; ?>"><?php echo $p->post_title; ?></option>
+				<option value="<?php echo $p->ID; ?>"<?php echo (isset($_POST['pid']) && $_POST['pid'] == $p->ID) ? ' selected':''; ?>><?php echo $p->post_title; ?></option>
 				<?php } ?>
 			
 			</select>
@@ -186,20 +216,31 @@ if (empty($task_errors)) {
 			<select name="uid" id="uid" class="form-control">
 				<option value="0">Select a team member</option>
 				<?php foreach ($users as $usr) { ?>
-				<option value="<?php echo $usr->ID; ?>"<?php echo ($usr->ID == $current_user->ID) ? ' selected':''; ?>><?php echo $usr->data->display_name; ?></option>
+				<option value="<?php echo $usr->ID; ?>"<?php echo (isset($_POST['uid']) && $_POST['uid'] == $usr->ID) ? ' selected':''; ?>><?php echo $usr->data->display_name; ?></option>
 				<?php } ?>
 			
 			</select>
 		</div>
 		
 		<div class="form-group required">
+			<label for="priority_level"><i class="fa fa-asterisk"></i> Priority Level</label>
+			<select name="priority_level" id="priority_level" class="form-control">
+				<option value="0">Select choose priority level</option>
+				<option value="1"<?php echo ($_POST['priority_level'] == '1') ? ' selected':''; ?>>Urgent</option>
+				<option value="2"<?php echo ($_POST['priority_level'] == '2') ? ' selected':''; ?>>High</option>
+				<option value="3"<?php echo ($_POST['priority_level'] == '3') ? ' selected':''; ?>>Medium</option>
+				<option value="4"<?php echo ($_POST['priority_level'] == '4') ? ' selected':''; ?>>Low</option>
+			</select>
+		</div>
+		
+		<div class="form-group required">
 			<label for="task_date"><i class="fa fa-asterisk"></i> Task date</label>
-			<input type="text" id="task_date" name="task_date" class="form-control date-picker" placeholder="Choose a date" value="<?php echo date('l j F, Y', strtotime("today")); ?>">
+			<input type="text" id="task_date" name="task_date" class="form-control date-picker" placeholder="Choose a date" value="<?php echo(isset($_POST['task_date'])) ? $_POST['task_date'] : date('l j F, Y', strtotime("today")) ; ?>">
 		</div>
 		
 		<div class="form-group required">
 			<label for="task_content"><i class="fa fa-asterisk"></i> Task details</label>
-			<textarea id="task_content" name="task_content" class="form-control"></textarea>
+			<textarea id="task_content" name="task_content" class="form-control"><?php echo (isset($_POST['task_content']) && $_POST['task_content'] != '') ? stripslashes($_POST['task_content']) :''; ?></textarea>
 		</div>
 
 		<div class="form-group">
@@ -221,10 +262,10 @@ if (empty($task_errors)) {
 		<div class="action-btns">
 			<div class="row">
 				<div class="col-sm-6">
-					<input type="submit" value="Update" class="btn btn-success btn-block">
+					<input type="submit" name="add_task" value="Update" class="btn btn-success btn-block">
 				</div>
 				<div class="col-sm-6">
-				<a href="<?php the_permalink(); ?>" class="btn btn-danger btn-block cancel-btn" title="Cancel">Cancel</a>
+				<a href="<?php echo $curURL; ?>" class="btn btn-danger btn-block cancel-btn" title="Cancel">Cancel</a>
 				</div>
 			</div>
 		</div>

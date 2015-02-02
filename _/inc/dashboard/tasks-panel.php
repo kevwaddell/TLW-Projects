@@ -1,7 +1,7 @@
 <?php
 $today = date('Ymd'); 
-$weeks_before = date('Ymd', strtotime('today - 2 weeks'));
-$weeks_after = date('Ymd', strtotime('today + 2 weeks'));
+$weeks_before = date('Ymd', strtotime('today - 4 weeks'));
+$weeks_after = date('Ymd', strtotime('today + 4 weeks'));
 if ( get_query_var('paged') ) {
 
     $paged = get_query_var('paged');
@@ -103,6 +103,12 @@ $max_num_pages = $wp_query->max_num_pages;
 				
 				<?php while ( have_posts() ) :the_post(); 	
 				$project_id = get_field('project');
+				$priority_level = get_field('priority_level');
+				if (empty($priority_level)) {
+				$priority_level = "4";
+				update_post_meta(get_the_ID(), 'priority_level', $priority_level);	
+				$priority_level = get_field('priority_level');
+				}
 				$project_title = get_the_title($project_id);
 				$project = get_post($project_id);
 				$task_date = get_field('task_date');
@@ -125,6 +131,21 @@ $max_num_pages = $wp_query->max_num_pages;
 					<p class="bold"><i class="fa <?php echo ($status == 'pending') ? 'fa-clock-o col-danger':'fa-check-circle col-success'; ?>"></i> <?php the_title(); ?></p>
 						<span class="label label-default"> <i class="fa fa-user"></i> <?php the_author(); ?></span>
 						<span class="label label-default"> <i class="fa fa-building-o"></i> <?php echo $company[0]; ?></span>
+						<?php if ($status == 'pending' && $priority_level) { 
+							switch($priority_level) {
+							case "1": $priority_level_txt = "Urgent"; $priority_level_class = "danger";
+							break;
+							case "2": $priority_level_txt = "High"; $priority_level_class = "warning";
+							break;
+							case "3": $priority_level_txt = "Medium"; $priority_level_class = "primary";
+							break;
+							default: $priority_level_txt = "Low"; $priority_level_class = "info";	
+							}
+						?>
+						
+						<span class="label label-<?php echo $priority_level_class; ?>"> <i class="fa fa-sort"></i> <?php echo $priority_level_txt; ?></span>
+						
+						<?php } ?>
 					</td>
 					<td class="hidden-xs text-center">
 						<span class="label label-default"> <i class="fa fa-user"></i> <?php echo $project_author; ?></span>
